@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 // Requires the gulp-sass plugin
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
 
 var browserSync = require('browser-sync').create();
 
@@ -36,7 +37,13 @@ gulp.task('build', function (callback) {
 // Convert sass to css
 gulp.task('sass', function(){
   return gulp.src('scss/**/*.scss')
-    .pipe(sass()) // Converts Sass to CSS with gulp-sass
+    // Initializes sourcemaps
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      errLogToConsole: true
+     }))
+    // Writes sourcemaps into the CSS file
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('css'))
     .pipe(browserSync.reload({
       stream: true
